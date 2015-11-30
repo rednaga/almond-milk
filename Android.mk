@@ -4,7 +4,6 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := \
   milk.c
-LOCAL_C_INCLUDE := ${ANDROID_NDK_ROOT}/platforms/android-14/arch-arm/usr/include/
 
 LOCAL_MODULE := almondmilk
 LOCAL_MODULE_TAGS := optional
@@ -14,8 +13,6 @@ LOCAL_CFLAGS += -pie -fPIE
 LOCAL_LDFLAGS += -pie -fPIE
 
 APP_ABI := armeabi armeabi-v7a x86
-
-include $(BUILD_STATIC_EXECUTABLE)
 
 include $(BUILD_EXECUTABLE)
 
