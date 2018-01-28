@@ -22,12 +22,16 @@
 typedef int (*CopyDexToFileFn)(int, int, int, size_t*, uint8_t*, int32_t*, uint8_t*);
 typedef int (*CopyDexToMemFn)(void*, size_t, size_t*, uint8_t*, uint8_t*);
 
+// Checks first 0x20 bytes for signs of being a preloaded and encrypted dex
 typedef int (*Almond_Is_DRMDex)(const void*, size_t);
 // isDRM returns
 #define NOT_PROTECTED 0 // Also used for an error occuring
 #define PRELOADED_DEX 1
 #define ODEX          2
 #define OAT           3
+// Anything will return PRELOADED_DEX if it has;
+//    \x01\x18\x24application/octet
+// at the start of the file.
 
 typedef int (*almdUtilGetKey)(void*, void*, void*, void*);
 typedef int (*almdUtilCheckPreloadID)(void*);
@@ -56,10 +60,16 @@ int main(int argc, const char* argv[]) {
     return -1;
   }
 
+  if(checkPreloadID("testKey" != 1)) {
+    printf("Wrong key!\n");
+  } else {
+    printf("Correct key!\n");
+  }
+
   almdUtilGetPreloadKey getPreloadKey = dlsym(handle, "almdUtilGetPreloadKey");
   Almond_Is_DRMDex isDRMDex = dlsym(handle, "Almond_Is_DRMDex");
 
-  if(isDRMDex(header, sizeof(header)) != 1) {
+  if(isDRMDex(header, sizeof(header)) != PRELOADED_DEX) {
     printf("Not encrypted\n");
   } else {
     printf("Encrypted\n");
