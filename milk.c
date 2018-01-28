@@ -3,7 +3,6 @@
  *
  * Tim 'diff' Strazzere
  *   <strazz@gmail.com>
- *   <diff@sentinelone.com>
  *
  *
  * Special thanks to rovo89 for pushing me to
